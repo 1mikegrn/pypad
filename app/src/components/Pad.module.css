@@ -1,4 +1,6 @@
 .Pad {
+    position: fixed;
+    z-index: 10;
     width: 100vw;
     min-height: 100vh;
     margin: 0px;

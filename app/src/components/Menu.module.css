@@ -6,6 +6,7 @@
     right: 50px;
     width: 50px;
     height: 50px;
+    z-index: 12;
 }
 
 .MenuButton:hover {
@@ -16,6 +17,7 @@
     height: 100vh;
     top: 0px;
     position: fixed;
+    z-index: 11;
     background-color: #343434;
 }
 
