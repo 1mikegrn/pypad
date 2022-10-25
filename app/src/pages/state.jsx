@@ -6,6 +6,9 @@ function createState() {
             get: null,
             set: null,
             insert: null,
+        },
+        input: {
+            set: null,
         }
     }
 }
