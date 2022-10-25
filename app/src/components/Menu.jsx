@@ -22,6 +22,7 @@ function MenuFactory() {
     function toggleMenu() {
         let interval
         let target
+        console.log('menu')
         if (display() === "flex") {
             target = -1*Number(MenuStyle().width.slice(0,-2))
             interval = setInterval(() => setRight(v=>v-15), 1)
