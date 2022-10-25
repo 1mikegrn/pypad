@@ -61,9 +61,10 @@ function MenuFactory() {
 
     function MenuButton() {
         menu_button = (
-            <div class={css.MenuButton} onClick={toggleMenu}>
+            <div class={css.MenuButton}>
             </div>
         )
+        menu_button.addEventListener('click', toggleMenu)
         return menu_button
     }
 
