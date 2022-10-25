@@ -36,5 +36,5 @@ deploy() {
 case $1 in
     "deploy") deploy $@ ;;
     "build") build $@ ;;
-    "fe") frontend $@ ;;
+    "run") frontend $@ ;;
 esac
