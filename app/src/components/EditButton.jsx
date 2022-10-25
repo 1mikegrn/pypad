@@ -19,7 +19,7 @@ function EditButton() {
     )
 
     text_input.addEventListener("input", (event) => {
-        console.log("change")
+        text_input.value = " "
     })
 
     button.addEventListener('click', (event) => {
