@@ -14,7 +14,7 @@ function EditButton() {
     let text_input
     let button = (
         <div class={css.EditButton}>
-            <input style={TextStyle()} class={css.Input} ref={text_input} type="text" name="" value="" />
+            <textarea style={TextStyle()} class={css.Input} ref={text_input} type="text" name="" value="" />
         </div>
     )
 
