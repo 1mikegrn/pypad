@@ -1,18 +1,13 @@
 import { createRoot } from "solid-js"
-import { createStore } from "solid-js/store"
 
-function createStores() {
-    const [updateHook, setUpdateHook] = createStore(() => {})
-
+function createState() {
     return {
-        hooks: {
-            update: {
-                get: () => updateHook,
-                set: (item) => setUpdateHook(item),
-            }
+        text: {
+            get: null,
+            set: null,
         }
     }
 }
 
-const state = createRoot(createStores)
+const state = createRoot(createState)
 export default state

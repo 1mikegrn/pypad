@@ -1,6 +1,8 @@
-import { Index } from "solid-js"
+import { Index, onMount } from "solid-js"
 import { createStore } from "solid-js/store"
 import css from "./Pad.module.css"
+
+import state from "../pages/state"
 
 function Pad() {
     const [text, setText] = createStore(
@@ -8,41 +10,70 @@ function Pad() {
             {
                 on: true,
                 end: true,
-                data: <></>
+                data: <></>,
+                char: "",
             },
             {
                 on: false,
                 end: true,
-                data: <>&nbsp;</>
+                data: <>&nbsp;</>,
+                char: "\n"
             },
         ]
     )
 
+    state.text.get = () => text
+    state.text.set = setText
+
     function insertText(char) {
+        _localDumps(text)
         if (char.length > 1) {
             return special_char(char)
         }
         if (char == " ") {
-            return _insertText(<>&nbsp;</>)
+            return _insertText(<>&nbsp;</>, char)
         }
-        return _insertText(char)
+        return _insertText(char, char)
     }
 
-    function _insertText(char, opts={}) {
-        let options = Object.assign({}, opts)
+    function _insertText(data, char) {
         let idx = text.findIndex(item => item.on === true)
         setText(idx, 'on', false)
         setText(col => {
             let next = idx+1
             let head = col.slice(0, next)
             let tail = col.slice(next)
-            let insert = {on: true, data: char}
-            if (options?.text) {
-                insert.text = options.text
-            }
-            return [...head, insert, ...tail]
+            let insert = {on: true, data: data, char: char}
+            let res = [...head, insert, ...tail]
+            return res
         })
     }
+
+    function _localDumps(res) {
+        let str = JSON.stringify(res.map(e=>e.char))
+        localStorage.setItem("text", str)
+        console.log(localStorage.getItem("text"))
+    }
+
+    function _localLoads() {
+        let arr = localStorage.getItem("text")
+        let str = JSON.parse(arr).slice(1, -2)
+
+        for (let s of str) {
+            switch (s) {
+                case "\n":
+                    _insertText(<br />, s)
+                    break
+                case "\t":
+                    _insertText(<>&nbsp;&nbsp;&nbsp;&nbsp;</>, "\t")
+                    break
+                default:
+                    _insertText(s, s)
+            }
+        }
+    }
+
+    onMount(_localLoads)
 
     function special_char(char) {
         switch (char) {
@@ -53,7 +84,7 @@ function Pad() {
                 delete_char()
                 break
             case "Enter":
-                _insertText(<br />, {text: "\n"})
+                _insertText(<br />, "\n")
                 break
             case "ArrowLeft":
                 move_cursor("left")
@@ -62,7 +93,7 @@ function Pad() {
                 move_cursor("right")
                 break
             case "Tab":
-                _insertText(<>&nbsp;&nbsp;&nbsp;&nbsp;</>, {text: "\t"})
+                _insertText(<>&nbsp;&nbsp;&nbsp;&nbsp;</>, "\t")
                 break
         }
     }

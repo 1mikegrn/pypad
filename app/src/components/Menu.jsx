@@ -1,6 +1,8 @@
 import { createEffect, createSignal } from "solid-js"
 import css from "./Menu.module.css"
 
+import state from "../pages/state"
+
 function MenuFactory() {
     let menu, menu_button
 
@@ -47,6 +49,10 @@ function MenuFactory() {
     function Menu() {
         menu = (
             <div style={MenuStyle()} class={css.Menu}>
+                <div class={css.Buttons}>
+                    <h2 class={css.Button}>Login</h2>
+                    <h2 class={css.Button}>Save</h2>
+                </div>
             </div>
         )
         return menu

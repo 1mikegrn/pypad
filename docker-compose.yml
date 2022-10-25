@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  pypad:
+    image: pypad
+    container_name: pypad
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile.server
+    volumes:
+      - ./app:/home/pypad/code/app
+      - ./server/src/pypad:/home/pypad/server/src/pypad
+    ports:
+      - "31060:31060"
