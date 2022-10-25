@@ -64,7 +64,7 @@ function MenuFactory() {
             <div class={css.MenuButton}>
             </div>
         )
-        menu_button.addEventListener('click', toggleMenu)
+        menu_button.addEventListener('touchstart click', toggleMenu)
         return menu_button
     }
 
