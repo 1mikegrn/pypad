@@ -44,7 +44,7 @@ function MenuFactory() {
                 }
             })
         }
-        console.log(menu)
+        console.dir(menu)
     }
 
     function Menu() {
