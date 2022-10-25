@@ -1,5 +1,6 @@
 import Pad from "../components/Pad"
 import MenuFactory from "../components/Menu"
+import EditButton from "../components/EditButton"
 
 function App() {
     const [Menu, MenuButton] = MenuFactory()
@@ -8,6 +9,7 @@ function App() {
         <Pad />
         <Menu />
         <MenuButton />
+        <EditButton />
         </>
     )
 }

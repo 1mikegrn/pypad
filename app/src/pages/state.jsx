@@ -5,6 +5,7 @@ function createState() {
         text: {
             get: null,
             set: null,
+            insert: null,
         }
     }
 }

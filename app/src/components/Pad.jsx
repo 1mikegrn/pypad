@@ -57,6 +57,7 @@ function Pad() {
 
     function _localLoads() {
         let arr = localStorage.getItem("text")
+        if (!arr) return
         let str = JSON.parse(arr).slice(1, -2)
 
         for (let s of str) {
