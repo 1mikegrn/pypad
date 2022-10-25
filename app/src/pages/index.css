@@ -1,0 +1,15 @@
+@import url(https://fonts.googleapis.com/css?family=Fira+Code:400,300,700);
+
+body {
+	font: 300 15px/1.6 'Fira Code', serif, sans-serif;
+	color: #989898;
+	background: #1a1818;
+    margin: 0px;
+    padding: 0px;
+    width: 100vw;
+    height: 100vh;
+}
+
+span {
+    font-size: 30px;
+}
