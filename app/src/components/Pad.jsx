@@ -179,12 +179,7 @@ function Pad() {
             let item = items[index]
             if (item) {
                 if (t.on) {
-                    // thin bar
-                    // item.style.boxShadow = "inset 2px 0px 0px -0px #E0E0E0"
-
-                    // box
                     item.style.boxShadow = "inset 0px 0px 1px 1px #E0E0E0"
-
                     let { top } = getOffset(item)
                     state.input.set(top)
                 }
