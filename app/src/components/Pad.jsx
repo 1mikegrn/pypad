@@ -185,8 +185,8 @@ function Pad() {
                     // box
                     item.style.boxShadow = "inset 0px 0px 1px 1px #E0E0E0"
 
-                    let { left, top } = getOffset(item)
-                    state.input.set({left: left, top: top})
+                    let { top } = getOffset(item)
+                    state.input.set(top)
                 }
                 else {
                     item.style.boxShadow = "inset 0 0 0 0 #E0E0E0"

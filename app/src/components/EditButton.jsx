@@ -4,12 +4,11 @@ import state from "../pages/state"
 
 function EditButton() {
 
-    const [pos, setPos] = createSignal({left: 0, top: 0})
+    const [pos, setPos] = createSignal(0)
     state.input.set = setPos
 
     const TextStyle = () => ({
-        left: `${pos().left}px`,
-        top: `${pos().top}px`,
+        top: `${pos()}px`,
     })
 
     let text_input
