@@ -24,11 +24,17 @@ frontend() {
 }
 
 deploy() {
-    pushd ./app
-    npm install
-    npm run build
-    popd
-    docker-compose build --no-cache
+    if [[ -z $2 || $2 = "fe" ]]
+    then
+        pushd ./app
+        npm install
+        npm run build
+        popd
+    fi
+    if [[ -z $2 || $2 = "be" ]]
+    then
+        docker-compose build --no-cache
+    fi
     docker-compose down -t 0
     docker-compose up -d
 }
