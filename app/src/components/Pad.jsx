@@ -84,7 +84,6 @@ function Pad() {
         }
     }
 
-    onMount(_localLoads)
 
     function special_char(char) {
         switch (char) {
@@ -158,13 +157,6 @@ function Pad() {
         setText(idx, 'on', true)
     }
 
-    document.addEventListener("keydown", (event) => {
-        if (event.ctrlKey || event.metaKey) {
-            return
-        }
-        event.preventDefault()
-        insertText(event.key)
-    })
 
     function updateIndex(index) {
         return function() {
@@ -191,9 +183,35 @@ function Pad() {
         }
     }
 
+    let keysdown = new Map()
+    async function toggleInsert(event) {
+        if (event.ctrlKey || event.metaKey) {
+            return
+        }
+
+        keysdown.set(event.key, true)
+        event.preventDefault()
+        insertText(event.key)
+
+        await new Promise(r => setTimeout(r, 100))
+        while (keysdown.get(event.key)) {
+            await new Promise(r => setTimeout(r, 100))
+            if (keysdown.get(event.key)) {
+                insertText(event.key)
+                listen(event)
+            }
+        }
+    }
+
+    document.addEventListener("keydown", toggleInsert)
+    document.addEventListener("keyup", (event) => {
+        keysdown.set(event.key, false)
+    })
+
     document.addEventListener('keydown', listen)
     document.addEventListener('click', listen)
 
+    onMount(_localLoads)
     return (
         <div class={css.Pad}>
             <Index each={text}>
