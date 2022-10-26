@@ -13,13 +13,12 @@ window.mobileCheck = function() {
 function App() {
     const [Menu, MenuButton] = MenuFactory()
 
-    console.log(window.mobileCheck())
     return (
         <>
         <Pad />
         <Menu />
         <MenuButton />
-        <Show when={window.navigator.userAgentData?.mobile}>
+        <Show when={window.mobileCheck()}>
             <EditButton />
         </Show>
         </>
