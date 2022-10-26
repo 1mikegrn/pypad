@@ -165,7 +165,7 @@ function Pad() {
     }
 
     let items = {}
-    function listen(event) {
+    function updateCursor(event) {
         let index = 1
         for (let t of text) {
             let item = items[index]
@@ -195,8 +195,8 @@ function Pad() {
         insertText(event.key)
     })
 
-    document.addEventListener('keydown', listen)
-    document.addEventListener('click', listen)
+    document.addEventListener('keydown', updateCursor)
+    document.addEventListener('click', updateCursor)
 
     onMount(_loadString)
     return (

@@ -6,6 +6,7 @@ import { Show } from "solid-js"
 
 function App() {
     const [Menu, MenuButton] = MenuFactory()
+
     return (
         <>
         <Pad />
