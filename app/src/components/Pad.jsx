@@ -65,7 +65,7 @@ function Pad() {
         console.log(localStorage.getItem("text"))
     }
 
-    function _localLoads() {
+    function _loadString() {
         let arr = localStorage.getItem("text")
         if (!arr) return
         let str = JSON.parse(arr).slice(1, -2)
@@ -198,7 +198,7 @@ function Pad() {
     document.addEventListener('keydown', listen)
     document.addEventListener('click', listen)
 
-    onMount(_localLoads)
+    onMount(_loadString)
     return (
         <div class={css.Pad}>
             <Index each={text}>

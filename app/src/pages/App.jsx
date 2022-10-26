@@ -11,7 +11,6 @@ function App() {
         <Pad />
         <Menu />
         <MenuButton />
-            <EditButton />
         <Show when={window.navigator.userAgentData?.mobile}>
             <EditButton />
         </Show>
