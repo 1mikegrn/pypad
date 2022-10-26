@@ -187,6 +187,11 @@ function Pad() {
         if (event.ctrlKey || event.metaKey) {
             return
         }
+
+        if (event.key == "Tab") {
+            event.preventDefault()
+        }
+
         insertText(event.key)
     })
 

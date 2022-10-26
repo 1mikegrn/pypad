@@ -52,6 +52,7 @@ function MenuFactory() {
                 <div class={css.Buttons}>
                     <h2 class={css.Button}>Login</h2>
                     <h2 class={css.Button}>Save</h2>
+                    <h2 class={css.Button}>Config</h2>
                 </div>
             </div>
         )

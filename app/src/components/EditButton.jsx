@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js"
 import css from "./EditButton.module.css"
 import state from "../pages/state"
+import Pencil from "./SVG/pencil"
 
 function EditButton() {
 
@@ -14,6 +15,7 @@ function EditButton() {
     let text_input
     let button = (
         <div class={css.EditButton}>
+            <Pencil />
             <textarea style={TextStyle()} class={css.Input} ref={text_input} type="text" name="" value="" />
         </div>
     )

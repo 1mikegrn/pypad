@@ -35,6 +35,8 @@
 .Button {
     width: 100%;
     text-align: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .Button:hover {
