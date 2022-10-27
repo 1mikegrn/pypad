@@ -1,8 +1,24 @@
 import os
 import re
+import base64
 
 
 from pypad.settings import APP_SETTINGS
+
+def write_file(session, path, text):
+    root = APP_SETTINGS.filepaths.fs_root
+    user = session["email"]
+
+    if path.startswith("/"):
+        path = path[1:]
+
+    filepath = os.path.join(root, user, path)
+    filedir = os.path.dirname(filepath)
+    os.makedirs(filedir, exist_ok=True)
+    text = base64.b64decode(text)
+
+    with open(filepath, 'wb') as f:
+        f.write(text)
 
 
 def serve_file(session, path):

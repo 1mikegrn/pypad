@@ -1,5 +1,5 @@
 import os
-import urllib.parse as parse
+from urllib.parse import urlencode
 
 import pytest
 
@@ -19,7 +19,7 @@ class TestLogin(CPWebCase):
         self.getPage(
             "/api/login",
             method="POST",
-            body=parse.urlencode(body)
+            body=urlencode(body)
         )
 
         assert self.status_code == 204

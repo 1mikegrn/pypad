@@ -9,6 +9,7 @@ class Filesystem:
 
     @cherrypy.tools.json_out()
     def GET(self):
-        session = sessions.get(cherrypy.request.cookie["token"])
+        token=cherrypy.request.cookie['token']
+        session = sessions.get(token.value)
         return walk_filesystem(session["email"])
 
