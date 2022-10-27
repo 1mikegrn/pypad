@@ -4,6 +4,9 @@ build() {
     if [ -z $2 ]
     then
         docker-compose build "${@:3}"
+    elif [ $2 = "testrunner" ]
+    then
+        docker build -f .docker/Dockerfile.testrunner -t testrunner .
     else
         docker-compose build $2 "${@:3}"
     fi
@@ -39,8 +42,21 @@ deploy() {
     docker-compose up -d
 }
 
+testrunner() {
+    docker rm pypad_testrunner &> /dev/null
+    docker run -tid \
+        -v $(pwd):/home/pypad/code \
+        --name pypad_testrunner \
+        --env-file .env/testrunner.env \
+        testrunner
+    docker exec -it pypad_testrunner bash
+    docker kill pypad_testrunner &> /dev/null
+    docker rm pypad_testrunner &> /dev/null
+}
+
 case $1 in
     "deploy") deploy $@ ;;
     "build") build $@ ;;
     "run") frontend $@ ;;
+    "testrunner") testrunner $@ ;;
 esac
