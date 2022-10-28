@@ -202,17 +202,46 @@ function Pad() {
     document.addEventListener('click', updateCursor)
 
     onMount(_loadString)
+
+    const bkg = () => {
+        let config, user_config
+
+        config = {
+            "min-height": "100vh",
+            "min-width": "100vw"
+        }
+
+        try {
+            user_config = JSON.parse(state.config.pad())
+        }
+        catch {
+            user_config = {}
+        }
+
+        return Object.assign(user_config, config)
+    }
+
+    const txt = () => {
+        let config
+        try {
+            config = JSON.parse(state.config.text())
+        }
+        catch {
+            config = {}
+        }
+        return config
+    }
+
     return (
-        <div class={css.Pad}>
+        <div class={css.Pad} style={bkg()}>
             <Index each={text}>
                 {(item, index) => {
                     let ref
                     let res = (
-                        <span ref={ref} onClick={updateIndex(index-1)}>{item().data}</span>
+                        <span ref={ref} style={txt()} onClick={updateIndex(index-1)}>{item().data}</span>
                     )
                     items[index] = ref
                     return res
-
             }}
             </Index>
         </div>

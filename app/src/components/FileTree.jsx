@@ -41,7 +41,10 @@ function FileTree() {
             }
         )
         .then(resp => resp.json())
-        .catch(resp => setFileTree([])))
+        .catch(resp => {
+            setFileTree([])
+            console.log(resp)
+        })
 
         if (resp) {
             setFileTree(resp)
@@ -49,6 +52,7 @@ function FileTree() {
     }
 
     onMount(update)
+
     return (
         <div class={css.FileTree}>
             <Folder name="Home" path="/" files={fileTree} expanded={false}/>

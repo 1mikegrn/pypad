@@ -18,6 +18,10 @@ function createState() {
         },
         filesystem: {
             update: () => {},
+        },
+        config: {
+            pad: () => {},
+            text: () => {},
         }
     }
 }

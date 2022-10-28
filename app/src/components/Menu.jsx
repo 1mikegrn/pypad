@@ -51,12 +51,17 @@ function MenuFactory() {
         state.menus.toggleLogin()
     }
 
+    function toggleConfig() {
+        toggleMenu()
+        state.menus.toggleConfig()
+    }
+
     function Menu() {
         menu = (
             <div style={MenuStyle()} class={css.Menu}>
                 <div class={css.Buttons}>
                     <h2 onClick={toggleLogin} class={css.Button}>Login</h2>
-                    <h2 onClick={toggleMenu} class={css.Button}>Config</h2>
+                    <h2 onClick={toggleConfig} class={css.Button}>Config</h2>
                     <h2 class={css.Button}>Save</h2>
                 </div>
                 <FileTree />

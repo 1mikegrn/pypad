@@ -40,3 +40,21 @@
 .ExitButton:hover {
     cursor: pointer;
 }
+
+.Filename {
+    font-size: 18px;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.PadConfig {
+    font-size: 18px;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.TextConfig {
+    font-size: 18px;
+    width: 80%;
+    margin-top: 20px;
+}

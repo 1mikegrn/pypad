@@ -2,6 +2,7 @@ import Pad from "../components/Pad"
 import MenuFactory from "../components/Menu"
 import EditButton from "../components/EditButton"
 import LoginMenu from "../components/LoginMenu"
+import ConfigMenu from "../components/ConfigMenu"
 
 import { Show } from "solid-js"
 
@@ -12,7 +13,7 @@ window.mobileCheck = function() {
 };
 
 window.menuSize = function() {
-    return screen.width <= 480? screen.width : 400
+    return screen.width <= 480? screen.width : 480
 }
 
 function App() {
@@ -20,8 +21,9 @@ function App() {
 
     return (
         <>
-        <Pad />
         <LoginMenu />
+        <ConfigMenu />
+        <Pad />
         <Menu />
         <MenuButton />
         <Show when={window.mobileCheck()}>
