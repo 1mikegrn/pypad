@@ -12,3 +12,5 @@ services:
       - ./server/src/pypad:/home/pypad/server/src/pypad
     ports:
       - "31060:31060"
+    env_file:
+        - .env/pypad.env

@@ -1,4 +1,4 @@
-import { Index, onMount } from "solid-js"
+import { createSignal, Index, onMount } from "solid-js"
 import { createStore } from "solid-js/store"
 import css from "./Pad.module.css"
 
@@ -15,6 +15,8 @@ function getOffset(el) {
 
 
 function Pad() {
+    const [listen, setListen] = createSignal(true)
+
     const [text, setText] = createStore(
         [
             {
@@ -34,6 +36,7 @@ function Pad() {
 
     state.text.get = () => text
     state.text.set = setText
+    state.input.listen = setListen
 
     function insertText(char) {
         _localDumps(text)
@@ -184,7 +187,7 @@ function Pad() {
     }
 
     document.addEventListener("keydown", (event) => {
-        if (event.ctrlKey || event.metaKey) {
+        if (event.ctrlKey || event.metaKey || !listen()) {
             return
         }
 

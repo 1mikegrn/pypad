@@ -54,9 +54,34 @@ testrunner() {
     docker rm pypad_testrunner &> /dev/null
 }
 
+start() {
+    if [[ $2 = "testrunner" ]]
+    then
+        testrunner
+    else
+        docker-compose up -d
+    fi
+}
+
+stop() {
+    docker-compose down -t 0
+}
+
+restart() {
+    stop
+    start
+}
+
+enter() {
+    docker-compose exec -it $2 bash
+}
+
 case $1 in
     "deploy") deploy $@ ;;
     "build") build $@ ;;
+    "start") start $@ ;;
+    "stop") stop $@ ;;
+    "restart") restart $@ ;;
     "run") frontend $@ ;;
-    "testrunner") testrunner $@ ;;
+    "enter") enter $@ ;;
 esac

@@ -19,6 +19,8 @@
     position: fixed;
     z-index: 11;
     background-color: #343434;
+    display: flex;
+    flex-direction: column;
 }
 
 .Buttons {

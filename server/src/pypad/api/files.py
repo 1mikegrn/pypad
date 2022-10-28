@@ -2,7 +2,6 @@ import cherrypy
 
 from pypad.lib.filesystem import serve_file, write_file
 from pypad.lib.auth import sessions
-from pypad.settings import APP_SETTINGS
 
 @cherrypy.expose
 class Files:
@@ -13,7 +12,7 @@ class Files:
         try:
             return serve_file(session, path)
         except FileNotFoundError:
-            raise cherrypy.HTTPError(500, "Internal Server Error")
+            raise cherrypy.HTTPError(404, "File Not Found")
 
     def PUT(self, path, text):
         token=cherrypy.request.cookie["token"]

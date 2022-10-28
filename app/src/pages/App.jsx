@@ -1,6 +1,7 @@
 import Pad from "../components/Pad"
 import MenuFactory from "../components/Menu"
 import EditButton from "../components/EditButton"
+import LoginMenu from "../components/LoginMenu"
 
 import { Show } from "solid-js"
 
@@ -10,12 +11,17 @@ window.mobileCheck = function() {
   return check;
 };
 
+window.menuSize = function() {
+    return screen.width <= 480? screen.width : 400
+}
+
 function App() {
     const [Menu, MenuButton] = MenuFactory()
 
     return (
         <>
         <Pad />
+        <LoginMenu />
         <Menu />
         <MenuButton />
         <Show when={window.mobileCheck()}>

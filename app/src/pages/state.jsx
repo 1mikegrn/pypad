@@ -3,12 +3,21 @@ import { createRoot } from "solid-js"
 function createState() {
     return {
         text: {
-            get: null,
-            set: null,
-            insert: null,
+            get: () => {},
+            set: () => {},
+            insert: () => {},
         },
         input: {
-            set: null,
+            set: () => {},
+            listen: () => {},
+        },
+        menus: {
+            toggleMain: () => {},
+            toggleLogin: () => {},
+            toggleConfig: () => {},
+        },
+        filesystem: {
+            set: () => {},
         }
     }
 }

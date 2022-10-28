@@ -1,4 +1,6 @@
 import { createEffect, createSignal } from "solid-js"
+import FileTree from "./FileTree"
+
 import css from "./Menu.module.css"
 
 import state from "../pages/state"
@@ -6,19 +8,16 @@ import state from "../pages/state"
 function MenuFactory() {
     let menu, menu_button
 
-    const screenWidth = () => {
-        return screen.width <= 480? screen.width : 400
-    }
-
-    const [right, setRight] = createSignal(-1*screenWidth())
+    const [right, setRight] = createSignal(-1*window.menuSize())
     const [display, setDisplay] = createSignal("none")
 
     const MenuStyle = () => ({
         "right": `${right()}px`,
         "display": `${display()}`,
-        "width": `${screenWidth()}px`
+        "width": `${window.menuSize()}px`
     })
 
+    state.menus.main = toggleMenu
     function toggleMenu() {
         let interval
         let target
@@ -46,14 +45,20 @@ function MenuFactory() {
         }
     }
 
+    function toggleLogin() {
+        toggleMenu()
+        state.menus.toggleLogin()
+    }
+
     function Menu() {
         menu = (
             <div style={MenuStyle()} class={css.Menu}>
                 <div class={css.Buttons}>
-                    <h2 class={css.Button}>Login</h2>
+                    <h2 onClick={toggleLogin} class={css.Button}>Login</h2>
+                    <h2 onClick={toggleMenu} class={css.Button}>Config</h2>
                     <h2 class={css.Button}>Save</h2>
-                    <h2 class={css.Button}>Config</h2>
                 </div>
+                <FileTree />
             </div>
         )
         return menu

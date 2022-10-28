@@ -2,9 +2,9 @@ import json
 import os
 import secrets
 
+from pypad.logging import logger
 from pypad.settings import APP_SETTINGS
 from .hashing import hash_password
-
 
 CREDENTIALS = None
 def get_credentials():
