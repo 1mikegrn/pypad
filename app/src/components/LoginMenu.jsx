@@ -18,7 +18,8 @@ function LoginMenu() {
         "width": `${window.menuSize()}px`
     })
 
-    state.menus.toggleLogin = toggleMenu
+    state.menus.login.display = display
+    state.menus.login.toggle = toggleMenu
     function toggleMenu() {
         let interval
         let target
@@ -67,7 +68,7 @@ function LoginMenu() {
 
         if (status == 204) {
             toggleMenu()
-            state.menus.toggleMain()
+            state.menus.main.toggle()
         }
         else {
             console.log(status)

@@ -12,9 +12,18 @@ function createState() {
             listen: () => {},
         },
         menus: {
-            toggleMain: () => {},
-            toggleLogin: () => {},
-            toggleConfig: () => {},
+            main: {
+                toggle: () => {},
+                display: () => {}
+            },
+            login: {
+                toggle: () => {},
+                display: () => {}
+            },
+            config: {
+                toggle: () => {},
+                display: () => {}
+            },
         },
         filesystem: {
             update: () => {},

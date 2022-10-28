@@ -40,7 +40,8 @@ function ConfigMenu() {
         "width": `${window.menuSize()}px`
     })
 
-    state.menus.toggleConfig = toggleMenu
+    state.menus.config.toggle = toggleMenu
+    state.menus.config.display = display
     function toggleMenu() {
         let interval
         let target

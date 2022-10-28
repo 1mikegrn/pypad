@@ -17,7 +17,8 @@ function MenuFactory() {
         "width": `${window.menuSize()}px`
     })
 
-    state.menus.main = toggleMenu
+    state.menus.main.toggle = toggleMenu
+    state.menus.main.display = display
     function toggleMenu() {
         let interval
         let target
@@ -48,12 +49,25 @@ function MenuFactory() {
 
     function toggleLogin() {
         toggleMenu()
-        state.menus.toggleLogin()
+        state.menus.login.toggle()
     }
 
     function toggleConfig() {
         toggleMenu()
-        state.menus.toggleConfig()
+        state.menus.config.toggle()
+    }
+
+    function toggleMenuButton() {
+        let check = false
+        for (let m in state.menus) {
+            if (state.menus[m].display() != "none") {
+                state.menus[m].toggle()
+                check = true
+            }
+        }
+        if (!check) {
+            toggleMenu()
+        }
     }
 
     function Menu() {
@@ -76,7 +90,7 @@ function MenuFactory() {
             <div class={css.MenuButton}>
             </div>
         )
-        menu_button.addEventListener('click', toggleMenu)
+        menu_button.addEventListener('click', toggleMenuButton)
         return menu_button
     }
 
