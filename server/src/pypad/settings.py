@@ -19,6 +19,10 @@ APP_SETTINGS=SimpleNamespace(
             "PYPAD_SESSION_TIMEOUT",
             "3600"
         ))
+    ),
+    stage=os.environ.get(
+        "PYPAD_STAGE",
+        "PROD"
     )
 )
 
