@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js"
+import { createEffect, createSignal, onMount } from "solid-js"
 import ExitButton from "./SVG/ExitButton"
 import state from "../pages/state"
 
@@ -15,7 +15,7 @@ function ConfigMenu() {
             `{\n"background-color": "#121212"\n}`
     )
     const [textConfig, setTextConfig] = createSignal(
-        `{\n"color": "#f5f5f5", \n"font-size": "22px"\n}`
+        `{\n"font-family": "'Fira Code', serif, sans-serif", \n"color": "#f5f5f5", \n"font-size": "22px"\n}`
     )
     const [filename, setFilename] = createSignal(
         `notes.txt`
@@ -26,12 +26,28 @@ function ConfigMenu() {
 
     function updatePad() {
         setPadConfig(pad.value)
+        localStorage.setItem("padConfig", pad.value)
     }
     function updateText() {
         setTextConfig(text.value)
+        localStorage.setItem("textConfig", text.value)
     }
     function updateFilename() {
         setFilename(file.value)
+    }
+
+    onMount(loadConfig)
+    function loadConfig() {
+        let pad_config = localStorage.getItem("padConfig")
+        let text_config = localStorage.getItem("textConfig")
+        if (!pad_config) {
+            pad_config = padConfig()
+        }
+        if (!textConfig) {
+            text_config = textConfig()
+        }
+        setPadConfig(pad_config)
+        setTextConfig(text_config)
     }
 
     const MenuStyle = () => ({
