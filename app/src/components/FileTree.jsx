@@ -1,7 +1,10 @@
 import css from "./FileTree.module.css"
 import Folder from "./Folder"
 
+import state from "../pages/state"
+
 import { createStore } from "solid-js/store"
+import { onMount } from "solid-js"
 
 function FileTree() {
     const [fileTree, setFileTree] = createStore(
@@ -28,6 +31,24 @@ function FileTree() {
         ]
     )
 
+    state.filesystem.update = update
+    async function update() {
+        let resp = await fetch(
+            "/api/filesystem",
+            {
+                method: "GET",
+                credentials: "include",
+            }
+        )
+        .then(resp => resp.json())
+        .catch(resp => setFileTree([])))
+
+        if (resp) {
+            setFileTree(resp)
+        }
+    }
+
+    onMount(update)
     return (
         <div class={css.FileTree}>
             <Folder name="Home" path="/" files={fileTree} expanded={false}/>

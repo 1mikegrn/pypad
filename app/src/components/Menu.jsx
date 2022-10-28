@@ -33,6 +33,7 @@ function MenuFactory() {
             })
         }
         else {
+            state.filesystem.update()
             setDisplay("flex")
             target = 0
             interval = setInterval(() => setRight(v=>v+15), 1)

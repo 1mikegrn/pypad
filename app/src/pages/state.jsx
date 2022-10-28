@@ -17,7 +17,7 @@ function createState() {
             toggleConfig: () => {},
         },
         filesystem: {
-            set: () => {},
+            update: () => {},
         }
     }
 }
