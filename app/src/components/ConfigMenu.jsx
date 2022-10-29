@@ -14,14 +14,19 @@ function ConfigMenu() {
     const [padConfig, setPadConfig] = createSignal(
             `{\n"background-color": "#121212"\n}`
     )
-    const [textConfig, setTextConfig] = createSignal(
-        `{\n"font-family": "'Fira Code', serif, sans-serif", \n"color": "#f5f5f5", \n"font-size": "22px"\n}`
-    )
+
+    let textConfig = {
+        "font-family": "'Fira Code', serif, sans-serif",
+        "color": "#f5f5f5",
+        "font-size": "22px"
+    }
+
     const [filename, setFilename] = createSignal(
         `notes.txt`
     )
 
-    state.config.text = textConfig
+    state.config.text.get = () => textConfig
+    state.config.text.set = (item) => {textConfig = item}
     state.config.pad = padConfig
 
     function updatePad() {
@@ -29,8 +34,15 @@ function ConfigMenu() {
         localStorage.setItem("padConfig", pad.value)
     }
     function updateText() {
-        setTextConfig(text.value)
-        localStorage.setItem("textConfig", text.value)
+        try {
+            let txt = JSON.parse(text.value)
+            localStorage.setItem("textConfig", text.value)
+            textConfig = txt
+            state.cursor.style.update(txt)
+        }
+        catch {
+
+        }
     }
     function updateFilename() {
         setFilename(file.value)
@@ -44,10 +56,10 @@ function ConfigMenu() {
             pad_config = padConfig()
         }
         if (!textConfig) {
-            text_config = textConfig()
+            text_config = textConfig
         }
         setPadConfig(pad_config)
-        setTextConfig(text_config)
+        textConfig = text_config
     }
 
     const MenuStyle = () => ({
@@ -88,12 +100,24 @@ function ConfigMenu() {
         }
     }
 
+    document.addEventListener("keydown", (event) => {
+        if (event.key == "=" && event.ctrlKey == true) {
+
+            console.log("grow")
+            event.preventDefault()
+        }
+        else if (event.key == "-" && event.ctrlKey == true) {
+            console.log("shrink")
+            event.preventDefault()
+        }
+    })
+
     let menu = (
         <div style={MenuStyle()} class={css.Menu}>
             <ExitButton class={css.ExitButton} onClick={toggleMenu}/>
             <input ref={file} onChange={updateFilename} class={css.Filename} type="text" name="name" placeholder="filename" value={filename()} />
             <textarea ref={pad} onChange={updatePad} class={css.PadConfig} rows="5" placeholder="background (JSON)">{padConfig()}</textarea>
-            <textarea ref={text} onChange={updateText} class={css.TextConfig} rows="5" placeholder="text (JSON)">{textConfig()}</textarea>
+            <textarea ref={text} onChange={updateText} class={css.TextConfig} rows="5" placeholder="text (JSON)">{JSON.stringify(textConfig)}</textarea>
         </div>
     )
 

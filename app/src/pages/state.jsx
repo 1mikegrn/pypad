@@ -11,6 +11,11 @@ function createState() {
             set: () => {},
             listen: () => {},
         },
+        cursor: {
+            style: {
+                update: () => {},
+            }
+        },
         menus: {
             main: {
                 toggle: () => {},
@@ -30,7 +35,10 @@ function createState() {
         },
         config: {
             pad: () => {},
-            text: () => {},
+            text: {
+                get: () => {},
+                set: () => {},
+            }
         }
     }
 }

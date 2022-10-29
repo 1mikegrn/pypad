@@ -16,19 +16,20 @@ function getOffset(el) {
 
 function Pad() {
     const [listen, setListen] = createSignal(true)
-
     const [text, setText] = createStore(
         [
             {
-                on: true,
-                end: true,
-                data: <></>,
+                on: false,
+                first: true,
+                data: <span onClick={updateIndex}></span>,
+                style: null,
                 char: "",
             },
             {
-                on: false,
-                end: true,
-                data: <>&nbsp;</>,
+                on: true,
+                last: true,
+                data: <span onClick={updateIndex}>&nbsp;</span>,
+                style: null,
                 char: "\n"
             },
         ]
@@ -39,7 +40,6 @@ function Pad() {
     state.input.listen = setListen
 
     function insertText(char) {
-        _localDumps(text)
         if (char.length > 1) {
             return special_char(char)
         }
@@ -49,44 +49,46 @@ function Pad() {
         return _insertText(char, char)
     }
 
-    function _insertText(data, char) {
+    function _insertText(data, char, style=state.config.text.get()) {
+
         let idx = text.findIndex(item => item.on === true)
-        setText(idx, 'on', false)
+        let tag = <span style={style} onClick={updateIndex}>{data}</span>
         setText(col => {
-            let next = idx+1
+            let next = idx
             let head = col.slice(0, next)
             let tail = col.slice(next)
-            let insert = {on: true, data: data, char: char}
+            let insert = {on: false, data: tag, char: char, style: style}
             let res = [...head, insert, ...tail]
             return res
         })
+        _localDumps(text)
     }
 
     function _localDumps(res) {
-        let str = JSON.stringify(res.map(e=>e.char))
+        let str = JSON.stringify(res.map(e=>[e.char, e.style]))
         localStorage.setItem("text", str)
-        console.log(localStorage.getItem("text"))
     }
 
-    function _loadString() {
-        let arr = localStorage.getItem("text")
+    function _loadString(arr=localStorage.getItem("text")) {
         if (!arr) return
-        let str = JSON.parse(arr).slice(1, -2)
+        let str = JSON.parse(arr).slice(1, -1)
 
-        for (let s of str) {
-            switch (s) {
+        let char, style
+        for ([char, style] of str) {
+            switch (char) {
                 case "\n":
-                    _insertText(<br />, s)
+                    _insertText(<br />, char, style)
                     break
                 case "\t":
-                    _insertText(<>&nbsp;&nbsp;&nbsp;&nbsp;</>, "\t")
+                    _insertText(<>&nbsp;&nbsp;&nbsp;&nbsp;</>, char, style)
                     break
                 default:
-                    _insertText(s, s)
+                    _insertText(char, char, style)
             }
         }
+        state.config.text.set(style)
+        updateCursorFromSettings(style)
     }
-
 
     function special_char(char) {
         switch (char) {
@@ -113,7 +115,7 @@ function Pad() {
 
     function move_cursor(dir) {
         let idx = text.findIndex(item => item.on === true)
-        if ((idx === 0 && dir === "left")||(idx === text.length - 2 && dir === "right")) {
+        if ((idx === 1 && dir === "left")||(idx === text.length - 1 && dir === "right")) {
             return
         }
         setText(idx, "on", false)
@@ -130,29 +132,30 @@ function Pad() {
 
     function delete_char() {
         let idx = text.findIndex(item => item.on === true)
-        idx = idx + 1
-        if (text[idx]?.end) {
+        if (text[idx+1]?.last) {
             return
         }
 
         setText(col => {
-            let head = col.slice(0, idx)
-            let tail = idx >= col.length ? [] : col.slice(idx+1)
+            let head = col.slice(0, idx+1)
+            let tail = idx >= col.length ? [] : col.slice(idx+2)
             return [...head, ...tail]
         })
+        _localDumps(text)
     }
 
     function backspace_char() {
         let idx = text.findIndex(item => item.on === true)
-        if (text[idx]?.end) {
+        if (text[idx-1]?.first) {
             return
         }
         setText(col => {
-            let head = col.slice(0, idx)
-            let tail = idx >= col.length ? [] : col.slice(idx+1)
+            let head = col.slice(0, idx-1)
+            let tail = idx >= col.length ? [] : col.slice(idx)
             return [...head, ...tail]
         })
         setText(idx - 1, 'on', true)
+        _localDumps(text)
     }
 
     function setIndex(idx) {
@@ -161,49 +164,41 @@ function Pad() {
     }
 
 
-    function updateIndex(index) {
-        return function() {
-            setIndex(index)
-        }
+    function updateIndex(event) {
+        let index = text.findIndex(item => item.data == event.target)
+        setIndex(index)
     }
 
-    let items = {}
     function updateCursor(event) {
-        let index = 1
-        for (let t of text) {
-            let item = items[index]
-            if (item) {
+        setText((text) => {
+            for (let t of text) {
                 if (t.on) {
-                    item.style.boxShadow = "inset 0px 0px 1px 1px #E0E0E0"
-                    let { top } = getOffset(item)
+                    t.data.style.boxShadow = "inset 0px 0px 1px 1px #E0E0E0"
+                    let { top } = getOffset(t.data)
                     state.input.set(top)
                 }
                 else {
-                    item.style.boxShadow = "inset 0 0 0 0 #E0E0E0"
+                    t.data.style.boxShadow = "inset 0 0 0 0 #E0E0E0"
                 }
             }
-            index += 1
+            return text
+        })
+    }
+
+    state.cursor.style.update = updateCursorFromSettings
+    function updateCursorFromSettings(settings) {
+        if (settings) {
+            setText(item => item.last, item => {
+                for (let [key, val] of Object.entries(settings)) {
+                    item.data.style[key] = val
+                }
+                return item
+            })
         }
     }
 
-    document.addEventListener("keydown", (event) => {
-        if (event.ctrlKey || event.metaKey || !listen()) {
-            return
-        }
 
-        if (event.key == "Tab") {
-            event.preventDefault()
-        }
-
-        insertText(event.key)
-    })
-
-    document.addEventListener('keydown', updateCursor)
-    document.addEventListener('click', updateCursor)
-
-    onMount(_loadString)
-
-    const bkg = () => {
+    function background() {
         let config, user_config
 
         config = {
@@ -221,29 +216,29 @@ function Pad() {
         return Object.assign(user_config, config)
     }
 
-    const txt = () => {
-        let config
-        try {
-            config = JSON.parse(state.config.text())
+    function listenAndInsert(event) {
+        if (event.ctrlKey || event.metaKey || !listen()) {
+            return
         }
-        catch {
-            config = {}
+
+        if (event.key == "Tab") {
+            event.preventDefault()
         }
-        return config
+
+        insertText(event.key)
     }
 
+    onMount(_loadString)
+    document.addEventListener('keydown', updateCursor)
+    document.addEventListener('click', updateCursor)
+    document.addEventListener("keydown", listenAndInsert)
     return (
-        <div class={css.Pad} style={bkg()}>
-            <Index each={text}>
-                {(item, index) => {
-                    let ref
-                    let res = (
-                        <span ref={ref} style={txt()} onClick={updateIndex(index-1)}>{item().data}</span>
-                    )
-                    items[index] = ref
-                    return res
+        <div class={css.Pad} style={background()}>
+            <For each={text}>
+                {(item) => {
+                    return item.data
             }}
-            </Index>
+            </For>
         </div>
     )
 }
